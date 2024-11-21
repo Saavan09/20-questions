@@ -20,17 +20,21 @@ namespace Program
                 // Create root node 
                 TreeNode root;
 
-                // Load existing tree
-                Console.WriteLine("Do you have a tree to load? Enter 'yes' or 'no'");
-                string input = Console.ReadLine();
-                if (input.ToLower() == "yes") root = LoadTree();
+                //// Load existing tree
+                //Console.WriteLine("Do you have a tree to load? Enter 'yes' or 'no'");
+                //string input = Console.ReadLine();
+                //if (input.ToLower() == "yes") root = LoadTree();
 
-                // If no existing tree to load, create a new tree 
-                else root = new TreeNode("placeholder");
+                //// If no existing tree to load, create a new tree 
+                //else root = new TreeNode("placeholder");
                 
                 // Run the game 
-                TreeNode answer = Game(root);
-                Console.WriteLine($"It's {answer.Data}!");
+                //PlayGame()
+
+
+
+
+
 
                 // Edit Tree
                 Console.WriteLine("Was this correct? Enter 'yes' or 'no'");
@@ -46,6 +50,10 @@ namespace Program
                 Console.WriteLine("Do you want to save the tree? Enter 'yes' or 'no'");
                 input = Console.ReadLine();
                 if(input.ToLower() == "yes") SaveTree(FindRoot(answer));
+
+
+
+
 
                 // Prompt to play again
                 Console.WriteLine("Would you like to play again? Enter 'yes' or 'no'.");
@@ -64,6 +72,8 @@ namespace Program
             // Ask root question 
             // Get input
             // Traverse to yes or no child nodes based on input 
+            
+            
 
             // If no child nodes, return node
             return root; // placeholder
@@ -96,6 +106,32 @@ namespace Program
         {
             if(node.Parent != null) FindRoot(node.Parent);
             return node;
+        }
+
+        static void PlayGame(TreeNode node)
+        {
+            if (node.YesChild == null && node.NoChild == null) // Leaf node (answer)
+            {
+                Console.WriteLine(node.QuestionOrAnswer);
+                return;
+            }
+
+            Console.WriteLine(node.QuestionOrAnswer + " (yes/no)");
+            string answer = Console.ReadLine().Trim().ToLower();
+
+            if (answer == "yes")
+            {
+                PlayGame(node.YesChild);
+            }
+            else if (answer == "no")
+            {
+                PlayGame(node.NoChild);
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
+                PlayGame(node); // Repeat the question
+            }
         }
     }
 }
