@@ -67,18 +67,6 @@ namespace Program
             Console.WriteLine("Goodbye!");
         }
 
-        static TreeNode Game(TreeNode root)
-        {
-            // Ask root question 
-            // Get input
-            // Traverse to yes or no child nodes based on input 
-            
-            
-
-            // If no child nodes, return node
-            return root; // placeholder
-        }
-
         static TreeNode EditTree(TreeNode startingNode)
         {
             // Add new nodes based on feedback and input 
@@ -108,6 +96,7 @@ namespace Program
             return node;
         }
 
+        //Plays game => Asks root question, goes through the tree using yes/no
         public static void PlayGame(TreeNode node)
         {
             if (node == null) return;
