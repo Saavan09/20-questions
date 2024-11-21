@@ -18,7 +18,7 @@ namespace Program
                 Console.WriteLine("Welcome to 20 questions! \nLet's get started!");
 
                 // Create root node 
-                TreeNode root;
+                TreeNode root = TreeNode.BuildQuestionTree();
 
                 //// Load existing tree
                 //Console.WriteLine("Do you have a tree to load? Enter 'yes' or 'no'");
@@ -29,7 +29,7 @@ namespace Program
                 //else root = new TreeNode("placeholder");
                 
                 // Run the game 
-                //PlayGame()
+                PlayGame()
 
 
 
@@ -108,8 +108,10 @@ namespace Program
             return node;
         }
 
-        static void PlayGame(TreeNode node)
+        public static void PlayGame(TreeNode node)
         {
+            if (node == null) return;
+
             if (node.YesChild == null && node.NoChild == null) // Leaf node (answer)
             {
                 Console.WriteLine(node.QuestionOrAnswer);
@@ -117,7 +119,7 @@ namespace Program
             }
 
             Console.WriteLine(node.QuestionOrAnswer + " (yes/no)");
-            string answer = Console.ReadLine().Trim().ToLower();
+            string answer = Console.ReadLine()?.Trim().ToLower();
 
             if (answer == "yes")
             {
