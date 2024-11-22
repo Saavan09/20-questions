@@ -24,8 +24,7 @@ public class TreeNode
         /** 
          * 1. Is it in Europe? 
          *     yes Is English one of the primary languages? 
-         *          yes Is it Ireland?
-         *              no Is it the United Kingdom?
+         *          yes Is it the United Kingdom?
          *          no Is it a slavic country?
          *              yes is it Poland?
          *              no is it France?
@@ -47,7 +46,6 @@ public class TreeNode
 
         // Guesses
         var uk = new TreeNode("Is it the United Kingdom?");
-        var ireland = new TreeNode("Is it Ireland?");
         var poland = new TreeNode("Is it Poland?");
         var france = new TreeNode("Is it France?");
         var india = new TreeNode("Is it India?");
@@ -61,7 +59,7 @@ public class TreeNode
         //question nodes
         //In europe is ROOT
         var isEnglishPrimary = new TreeNode("Is English one of the primary languages?");
-        isEnglishPrimary.YesChild = ireland;
+        isEnglishPrimary.YesChild = uk;
         isEnglishPrimary.NoChild = new TreeNode("Is it a Slavic country?");
         var isSlavic = isEnglishPrimary.NoChild;
         isSlavic.YesChild = poland;
@@ -93,8 +91,6 @@ public class TreeNode
         var isInEurope = new TreeNode("Is it in Europe?");
         isInEurope.YesChild = isEnglishPrimary;
         isInEurope.NoChild = isInAsia;
-
-        ireland.NoChild = uk;
 
         //return root
         var root = isInEurope;
