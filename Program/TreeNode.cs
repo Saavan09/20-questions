@@ -30,11 +30,11 @@ public class TreeNode
          *              yes is it Poland?
          *              no is it France?
          *     no Is it in Asia
-         *          yes Is it one of the Koreas?
-         *              yes Is it South Korea?
-         *              no Is Chinese a primary language?
-         *                  yes Is it China?
-         *                  no Is it Japan?
+         *          yes Is it in East Asia?
+         *              yes Is it China?
+         *              no Is it in South Asia?
+         *                  yes Is it India?
+         *                  no Is it Indonesia?
          *          no Is it in the Americas?
          *              yes Is it in South America?
          *                  yes Is it Argentina?
@@ -47,60 +47,49 @@ public class TreeNode
 
         // Guesses
         var uk = new TreeNode("Is it the United Kingdom?");
+        var ireland = new TreeNode("Is it Ireland?");
         var poland = new TreeNode("Is it Poland?");
         var france = new TreeNode("Is it France?");
-        var southKorea = new TreeNode("Is it South Korea?");
+        var india = new TreeNode("Is it India?");
         var china = new TreeNode("Is it China?");
-        var japan = new TreeNode("Is it Japan?");
+        var indonesia = new TreeNode("Is it Indonesia?");
         var argentina = new TreeNode("Is it Argentina?");
         var usa = new TreeNode("Is it the U.S.?");
         var chad = new TreeNode("Is it Chad?");
         var australia = new TreeNode("Is it Australia?");
 
-        //nodes
+        //question nodes
         //In europe is ROOT
-        var inEurope = new TreeNode("Is it in Europe?");
-        inEurope.YesChild = isEnglishPrimary;
-        inEurope.NoChild = inAsia;
-
         var isEnglishPrimary = new TreeNode("Is English one of the primary languages?");
         isEnglishPrimary.YesChild = ireland;
-        isEnglishPrimary.NoChild = isSlavic;
+        isEnglishPrimary.NoChild = new TreeNode("Is it a Slavic country?");
+        isEnglishPrimary.NoChild.YesChild = poland;
+        isEnglishPrimary.NoChild.NoChild = france;
 
-        var inAsia = new TreeNode("Is it in Asia?");
-        inAsia.YesChild = isKorea;
-        inAsia.NoChild = inAmericas;
+        var isInEastAsia = new TreeNode("Is it in East Asia?");
+        isInEastAsia.YesChild = china;
+        isInEastAsia.NoChild = new TreeNode("Is it in South Asia?");
+        isInEastAsia.NoChild.YesChild = india;
+        isInEastAsia.NoChild.NoChild = indonesia;
 
-        var isSlavic = new TreeNode("Is it a Slavic country?");
-        isSlavic.YesChild = poland;
-        isSlavic.NoChild = france;
+        var isInAsia = new TreeNode("Is it in Asia?");
+        isInAsia.YesChild = isInEastAsia;
+        isInAsia.NoChild = new TreeNode("Is it in the Americas?");
+        isInAsia.NoChild.YesChild = new TreeNode("Is it in South America?");
+        isInAsia.NoChild.YesChild.YesChild = argentina;
+        isInAsia.NoChild.YesChild.NoChild = usa;
+        isInAsia.NoChild.NoChild = new TreeNode("Is it in Africa?");
+        isInAsia.NoChild.NoChild.YesChild = chad;
+        isInAsia.NoChild.NoChild.NoChild = australia;
 
-        var ireland = new TreeNode("Is it Ireland?");
+        var inEurope = new TreeNode("Is it in Europe?");
+        inEurope.YesChild = isEnglishPrimary;
+        inEurope.NoChild = isInAsia;
+
         ireland.NoChild = uk;
 
-        var isKorea = new TreeNode("Is it one of the Koreas?");
-        isKorea.YesChild = southKorea;
-        isKorea.NoChild = isChinesePrimary;
-
-        var isChinesePrimary = new TreeNode("Is Chinese a primary language?");
-        isChinesePrimary.YesChild = china;
-        isChinesePrimary.NoChild = japan;
-
-        var inAmericas = new TreeNode("Is it in the Americas?");
-        inAmericas.YesChild = southAmerica;
-        inAmericas.NoChild = inAfrica;
-
-        var southAmerica = new TreeNode("Is it in South America?");
-        southAmerica.YesChild = argentina;
-        southAmerica.NoChild = usa;
-        var inAfrica = new TreeNode("Is it in Africa?");
-        inAfrica.YesChild = chad;
-        inAfrica.NoChild = australia;
-            
-
-
-        var root = inEurope
-
+        //return root
+        var root = inEurope;
         return root;
     }   
 }
