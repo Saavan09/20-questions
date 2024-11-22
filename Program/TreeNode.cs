@@ -63,33 +63,41 @@ public class TreeNode
         var isEnglishPrimary = new TreeNode("Is English one of the primary languages?");
         isEnglishPrimary.YesChild = ireland;
         isEnglishPrimary.NoChild = new TreeNode("Is it a Slavic country?");
-        isEnglishPrimary.NoChild.YesChild = poland;
-        isEnglishPrimary.NoChild.NoChild = france;
+        var isSlavic = isEnglishPrimary.NoChild;
+        isSlavic.YesChild = poland;
+        isSlavic.NoChild = france;
+
+        var isInSouthAsia = new TreeNode("Is it in South Asia?");
+        isInSouthAsia.YesChild = india;
+        isInSouthAsia.NoChild = indonesia;
 
         var isInEastAsia = new TreeNode("Is it in East Asia?");
         isInEastAsia.YesChild = china;
-        isInEastAsia.NoChild = new TreeNode("Is it in South Asia?");
-        isInEastAsia.NoChild.YesChild = india;
-        isInEastAsia.NoChild.NoChild = indonesia;
+        isInEastAsia.NoChild = isInSouthAsia;
 
         var isInAsia = new TreeNode("Is it in Asia?");
         isInAsia.YesChild = isInEastAsia;
         isInAsia.NoChild = new TreeNode("Is it in the Americas?");
-        isInAsia.NoChild.YesChild = new TreeNode("Is it in South America?");
-        isInAsia.NoChild.YesChild.YesChild = argentina;
-        isInAsia.NoChild.YesChild.NoChild = usa;
-        isInAsia.NoChild.NoChild = new TreeNode("Is it in Africa?");
-        isInAsia.NoChild.NoChild.YesChild = chad;
-        isInAsia.NoChild.NoChild.NoChild = australia;
+        var isInAmericas = isInAsia.NoChild;
 
-        var inEurope = new TreeNode("Is it in Europe?");
-        inEurope.YesChild = isEnglishPrimary;
-        inEurope.NoChild = isInAsia;
+        var isInSouthAmerica = new TreeNode("Is it in South America?");
+        isInSouthAmerica.YesChild = argentina;
+        isInSouthAmerica.NoChild = usa;
+        isInAmericas.YesChild = isInSouthAmerica;
+
+        var isInAfrica = new TreeNode("Is it in Africa?");
+        isInAfrica.YesChild = chad;
+        isInAfrica.NoChild = australia;
+        isInAmericas.NoChild = isInAfrica;
+
+        var isInEurope = new TreeNode("Is it in Europe?");
+        isInEurope.YesChild = isEnglishPrimary;
+        isInEurope.NoChild = isInAsia;
 
         ireland.NoChild = uk;
 
         //return root
-        var root = inEurope;
+        var root = isInEurope;
         return root;
     }   
 }
