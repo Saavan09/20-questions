@@ -6,18 +6,11 @@ public class TreeNode
     public TreeNode YesChild { get; set; }
     public TreeNode NoChild { get; set; }
 
-    public TreeNode(string questionOrAnswer)
-    {
-        QuestionOrAnswer = questionOrAnswer;
-    }
-
-    //helper function to create nodes so that code is not repeated
-    private static TreeNode CreateNode(string questionOrAnswer, TreeNode yesChild = null, TreeNode noChild = null)
+    public TreeNode(string questionOrAnswer, TreeNode yesChild = null, TreeNode noChild = null)
     {
         var node = new TreeNode(questionOrAnswer);
         node.YesChild = yesChild;
         node.NoChild = noChild;
-        return node;
     }
 
     public static TreeNode BuildQuestionTree()
@@ -60,15 +53,15 @@ public class TreeNode
 
         //question nodes
         //In europe is ROOT
-        var isInAfrica = CreateNode("Is it in Africa?", chad, australia);
-        var isInSouthAmerica = CreateNode("Is it in South America?", argentina, usa);
-        var isInAmericas = CreateNode("Is it in the Americas?", isInSouthAmerica, isInAfrica);
-        var isInSouthAsia = CreateNode("Is it in South Asia?", india, indonesia);
-        var isInEastAsia = CreateNode("Is it in East Asia?", china, isInSouthAsia);
-        var isInAsia = CreateNode("Is it in Asia?", isInEastAsia, isInAmericas);
-        var isSlavic = CreateNode("Is it a Slavic country?", poland, france);
-        var isEnglishPrimary = CreateNode("Is English one of the primary languages?", uk, isSlavic);
-        var isInEurope = CreateNode("Is it in Europe?", isEnglishPrimary, isInAsia);
+        var isInAfrica = new TreeNode("Is it in Africa?", chad, australia);
+        var isInSouthAmerica = new TreeNode("Is it in South America?", argentina, usa);
+        var isInAmericas = new TreeNode("Is it in the Americas?", isInSouthAmerica, isInAfrica);
+        var isInSouthAsia = new TreeNode("Is it in South Asia?", india, indonesia);
+        var isInEastAsia = new TreeNode("Is it in East Asia?", china, isInSouthAsia);
+        var isInAsia = new TreeNode("Is it in Asia?", isInEastAsia, isInAmericas);
+        var isSlavic = new TreeNode("Is it a Slavic country?", poland, france);
+        var isEnglishPrimary = new TreeNode("Is English one of the primary languages?", uk, isSlavic);
+        var isInEurope = new TreeNode("Is it in Europe?", isEnglishPrimary, isInAsia);
         
 
         //return root

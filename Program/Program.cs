@@ -29,27 +29,26 @@ namespace Program
                 //else root = new TreeNode("placeholder");
                 
                 // Run the game 
-                PlayGame()
+                //store last node in case guess is wrong
+                var currentNode = PlayGame(root);
 
-
-
-
-
-
-                // Edit Tree
+                //add questions for responsive tree
                 Console.WriteLine("Was this correct? Enter 'yes' or 'no'");
-                input = Console.ReadLine();
+                var input = Console.ReadLine();
                 if (input.ToLower() == "no")
                 {
-                    Console.WriteLine("Would you like to add a question?");
-                    input = Console.ReadLine();
-                    if (input.ToLower() == "yes") answer = EditTree(answer);
+                    Console.WriteLine("Please enter a new question to grow the tree, then - something that differentiates between your answer and mine. When answered yes, it should be the country you are thinking of.");
+                    var question = Console.ReadLine();
+                    Console.WriteLine("What country were you thinking of?");
+                    var answer = Console.ReadLine();
+                    Console.WriteLine("Your question has been logged. Thanks!");
+                    EditTree(currentNode, question, answer);
                 }
 
                 // Save Tree
                 Console.WriteLine("Do you want to save the tree? Enter 'yes' or 'no'");
                 input = Console.ReadLine();
-                if(input.ToLower() == "yes") SaveTree(FindRoot(answer));
+                //if(input.ToLower() == "yes") SaveTree(FindRoot(answer));
 
 
 
@@ -67,11 +66,20 @@ namespace Program
             Console.WriteLine("Goodbye!");
         }
 
-        static TreeNode EditTree(TreeNode startingNode)
+        //takes in a new question and new country answer, then adds it to the tree
+        static void EditTree(TreeNode currentNode, string newQuestion, string yesChild)
         {
-            // Add new nodes based on feedback and input 
+            //the current guess, which will be the "no" child of the new question
+            string incorrectAnswer = currentNode.QuestionOrAnswer;
 
-            return startingNode; // placeholder
+            //create new nodes
+            TreeNode oldQuestionNode = new TreeNode(incorrectAnswer);//the old guess
+            TreeNode newQuestionYesChild = new TreeNode(yesChild);//the new guess
+            
+            //add in the new question, which branches into new guess if yes and old guess if no
+            currentNode.QuestionOrAnswer = newQuestion;
+            currentNode.YesChild = newQuestionYesChild;
+            currentNode.NoChild = oldQuestionNode;
         }
 
         static void SaveTree(TreeNode root)
@@ -87,24 +95,16 @@ namespace Program
             return null;
         }
 
-        // Recursive function - navigates upwards through parents until finding root 
-        // Returns root node 
-        // Accepts a child node as parameter 
-        static TreeNode FindRoot(TreeNode node)
-        {
-            if(node.Parent != null) FindRoot(node.Parent);
-            return node;
-        }
-
         //Plays game => Asks root question, goes through the tree using yes/no
-        public static void PlayGame(TreeNode node)
+        //returns last visited treenode
+        public static TreeNode PlayGame(TreeNode node)
         {
-            if (node == null) return;
+            if (node == null) return null;
 
             if (node.YesChild == null && node.NoChild == null) // Leaf node (answer)
             {
                 Console.WriteLine(node.QuestionOrAnswer);
-                return;
+                return node;
             }
 
             Console.WriteLine(node.QuestionOrAnswer + " (yes/no)");
@@ -112,16 +112,16 @@ namespace Program
 
             if (answer == "yes")
             {
-                PlayGame(node.YesChild);
+                return PlayGame(node.YesChild);
             }
             else if (answer == "no")
             {
-                PlayGame(node.NoChild);
+                return PlayGame(node.NoChild);
             }
             else
             {
                 Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
-                PlayGame(node); // Repeat the question
+                return PlayGame(node); // Repeat the question
             }
         }
     }
