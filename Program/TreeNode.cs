@@ -11,12 +11,6 @@ public class TreeNode
         QuestionOrAnswer = questionOrAnswer;
     }
 
-    public void AddChildren(TreeNode childYes, TreeNode childNo)
-    {
-        this.ChildYes = childYes;
-        this.ChildNo = childNo;
-    }
-
     //helper function to create nodes so that code is not repeated
     private static TreeNode CreateNode(string questionOrAnswer, TreeNode yesChild = null, TreeNode noChild = null)
     {
