@@ -21,10 +21,21 @@ namespace Program
                 TreeNode root = TreeNode.BuildQuestionTree();
 
                 //// Load existing tree
-                //Console.WriteLine("Do you have a tree to load? Enter 'yes' or 'no'");
-                //string input = Console.ReadLine();
-                //if (input.ToLower() == "yes") root = LoadTree();
+                Console.WriteLine("Do you have a tree to load? Enter 'yes' or 'no'");
+                string input = Console.ReadLine();
+                if (input.ToLower() == "yes") {
+                    root = LoadTree();
 
+                    if(root == null){
+                        Console.WriteLine("Failed to load the tree. Starting with a new one.");
+                         root = new TreeNode("placeholder");
+                    }
+
+                }
+                else
+                {
+                    root = new TreeNode("placeholder");
+                }
                 //// If no existing tree to load, create a new tree 
                 //else root = new TreeNode("placeholder");
                 
@@ -85,11 +96,39 @@ namespace Program
         static void SaveTree(TreeNode root)
         {
             // save to a file
+            try
+            {
+                string json = JsonConvert.SerializeObject(root, Formatting.Indented);
+                File.WriteAllText("tree.json", json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error saving the tree: " + ex.Message);
+            }
         }
 
         static TreeNode LoadTree()
         {
             // load from file 
+
+            try
+            {
+                if (File.Exists("tree.json"))
+                {
+                    string json = File.ReadAllText("tree.json");
+                    return JsonConvert.DeserializeObject<TreeNode>(json);
+                }
+                else
+                {
+                    Console.WriteLine("No saved tree found.");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error loading the tree: " + ex.Message);
+                return null;
+            }
 
             // return root node 
             return null;
