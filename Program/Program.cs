@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Program
 {
@@ -28,30 +30,26 @@ namespace Program
 
                     if(root == null){
                         Console.WriteLine("Failed to load the tree. Starting with a new one.");
-                         root = new TreeNode("placeholder");
+                        root = TreeNode.BuildQuestionTree();
                     }
+                    else Console.WriteLine("Loaded tree successfully. Starting with existing tree.");
 
                 }
-                else
-                {
-                    root = new TreeNode("placeholder");
-                }
-                //// If no existing tree to load, create a new tree 
-                //else root = new TreeNode("placeholder");
+
                 
                 // Run the game 
-                PlayGame(root);
+                TreeNode currentNode = PlayGame(root);
 
                 //add questions for responsive tree
                 Console.WriteLine("Was this correct? Enter 'yes' or 'no'");
-                var input = Console.ReadLine();
+                input = Console.ReadLine();
                 if (input.ToLower() == "yes") Console.WriteLine("Hurray!");
                 if (input.ToLower() == "no")
                 {
                     Console.WriteLine("Please enter a new question to grow the tree, then - something that differentiates between your answer and mine. When answered yes, it should be the country you are thinking of.");
-                    var question = Console.ReadLine();
+                    string question = Console.ReadLine();
                     Console.WriteLine("What country were you thinking of?");
-                    var answer = Console.ReadLine();
+                    string answer = Console.ReadLine();
                     Console.WriteLine("Your question has been logged. Thanks!");
                     EditTree(currentNode, question, answer);
                 }
@@ -59,7 +57,7 @@ namespace Program
                 // Save Tree
                 Console.WriteLine("Do you want to save the tree? Enter 'yes' or 'no'");
                 input = Console.ReadLine();
-                //if(input.ToLower() == "yes") SaveTree(FindRoot(answer));
+                if(input.ToLower() == "yes") SaveTree(root);
 
 
 
@@ -96,27 +94,50 @@ namespace Program
         static void SaveTree(TreeNode root)
         {
             // save to a file
+            StreamWriter textFile = null;
+
             try
             {
-                string json = JsonConvert.SerializeObject(root, Formatting.Indented);
-                File.WriteAllText("tree.json", json);
+                textFile = new StreamWriter($"tree.txt");                
+
+                SerializeTree(root, textFile);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error saving the tree: " + ex.Message);
             }
+            finally
+            {
+                if (textFile != null) textFile.Close();
+            }
+        }
+
+        // pre-order tree traversal 
+        static void SerializeTree(TreeNode node, StreamWriter writer)
+        {
+            if (node == null)
+            {
+                writer.WriteLine("#"); // Marker for null
+                return;
+            }
+
+            writer.WriteLine(node.QuestionOrAnswer);      
+            SerializeTree(node.YesChild, writer);  
+            SerializeTree(node.NoChild, writer);  
         }
 
         static TreeNode LoadTree()
         {
             // load from file 
-
+            StreamReader textFile = null;
+            TreeNode currentNode;
             try
             {
-                if (File.Exists("tree.json"))
+                if (File.Exists("tree.txt"))
                 {
-                    string json = File.ReadAllText("tree.json");
-                    return JsonConvert.DeserializeObject<TreeNode>(json);
+                    textFile = new StreamReader($"tree.txt");
+
+                    currentNode = DeserializeTree(textFile);
                 }
                 else
                 {
@@ -129,10 +150,28 @@ namespace Program
                 Console.WriteLine("Error loading the tree: " + ex.Message);
                 return null;
             }
+            finally
+            {
+                if(textFile != null) textFile.Close();
+            }
 
             // return root node 
-            return null;
+            return currentNode;
         }
+
+        // pre-order tree traversal 
+        static TreeNode DeserializeTree(StreamReader reader)
+        {
+            string line = reader.ReadLine();
+            if (line == null || line == "#") return null;
+
+            TreeNode node = new TreeNode(line);
+            node.YesChild = DeserializeTree(reader);
+            node.NoChild = DeserializeTree(reader);
+
+            return node;
+        }
+
 
         //Plays game => Asks root question, goes through the tree using yes/no
         //returns last visited treenode
@@ -142,11 +181,11 @@ namespace Program
             if (node.YesChild == null && node.NoChild == null) // Leaf node (answer)
             {
                 Console.WriteLine(node.QuestionOrAnswer);
-                return
+                return node;
             }
 
             Console.WriteLine(node.QuestionOrAnswer + " (yes/no)");
-            string answer = Console.ReadLine()?.Trim().ToLower();
+            string answer = Console.ReadLine().Trim().ToLower();
 
             if (answer == "yes")
             {

@@ -6,11 +6,17 @@ public class TreeNode
     public TreeNode YesChild { get; set; }
     public TreeNode NoChild { get; set; }
 
-    public TreeNode(string questionOrAnswer, TreeNode yesChild = null, TreeNode noChild = null)
+    public TreeNode(string questionOrAnswer, TreeNode yesChild, TreeNode noChild)
     {
-        var node = new TreeNode(questionOrAnswer);
-        node.YesChild = yesChild;
-        node.NoChild = noChild;
+        QuestionOrAnswer = questionOrAnswer;
+        YesChild = yesChild;
+        NoChild = noChild;
+    }
+    public TreeNode(string questionOrAnswer)
+    {
+        QuestionOrAnswer=questionOrAnswer;
+        YesChild = null;
+        NoChild = null;
     }
 
     public static TreeNode BuildQuestionTree()
@@ -40,32 +46,32 @@ public class TreeNode
          */
 
         // Guesses
-        var uk = new TreeNode("Is it the United Kingdom?");
-        var poland = new TreeNode("Is it Poland?");
-        var france = new TreeNode("Is it France?");
-        var india = new TreeNode("Is it India?");
-        var china = new TreeNode("Is it China?");
-        var indonesia = new TreeNode("Is it Indonesia?");
-        var argentina = new TreeNode("Is it Argentina?");
-        var usa = new TreeNode("Is it the U.S.?");
-        var chad = new TreeNode("Is it Chad?");
-        var australia = new TreeNode("Is it Australia?");
+        TreeNode uk = new TreeNode("Is it the United Kingdom?");
+        TreeNode poland = new TreeNode("Is it Poland?");
+        TreeNode france = new TreeNode("Is it France?");
+        TreeNode india = new TreeNode("Is it India?");
+        TreeNode china = new TreeNode("Is it China?");
+        TreeNode indonesia = new TreeNode("Is it Indonesia?");
+        TreeNode argentina = new TreeNode("Is it Argentina?");
+        TreeNode usa = new TreeNode("Is it the U.S.?");
+        TreeNode chad = new TreeNode("Is it Chad?");
+        TreeNode australia = new TreeNode("Is it Australia?");
 
         //question nodes
         //In europe is ROOT
-        var isInAfrica = new TreeNode("Is it in Africa?", chad, australia);
-        var isInSouthAmerica = new TreeNode("Is it in South America?", argentina, usa);
-        var isInAmericas = new TreeNode("Is it in the Americas?", isInSouthAmerica, isInAfrica);
-        var isInSouthAsia = new TreeNode("Is it in South Asia?", india, indonesia);
-        var isInEastAsia = new TreeNode("Is it in East Asia?", china, isInSouthAsia);
-        var isInAsia = new TreeNode("Is it in Asia?", isInEastAsia, isInAmericas);
-        var isSlavic = new TreeNode("Is it a Slavic country?", poland, france);
-        var isEnglishPrimary = new TreeNode("Is English one of the primary languages?", uk, isSlavic);
-        var isInEurope = new TreeNode("Is it in Europe?", isEnglishPrimary, isInAsia);
+        TreeNode isInAfrica = new TreeNode("Is it in Africa?", chad, australia);
+        TreeNode isInSouthAmerica = new TreeNode("Is it in South America?", argentina, usa);
+        TreeNode isInAmericas = new TreeNode("Is it in the Americas?", isInSouthAmerica, isInAfrica);
+        TreeNode isInSouthAsia = new TreeNode("Is it in South Asia?", india, indonesia);
+        TreeNode isInEastAsia = new TreeNode("Is it in East Asia?", china, isInSouthAsia);
+        TreeNode isInAsia = new TreeNode("Is it in Asia?", isInEastAsia, isInAmericas);
+        TreeNode isSlavic = new TreeNode("Is it a Slavic country?", poland, france);
+        TreeNode isEnglishPrimary = new TreeNode("Is English one of the primary languages?", uk, isSlavic);
+        TreeNode isInEurope = new TreeNode("Is it in Europe?", isEnglishPrimary, isInAsia);
         
 
         //return root
-        var root = isInEurope;
+        TreeNode root = isInEurope;
         return root;
     }   
 }
