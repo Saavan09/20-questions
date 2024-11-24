@@ -40,12 +40,12 @@ namespace Program
                 //else root = new TreeNode("placeholder");
                 
                 // Run the game 
-                //store last node in case guess is wrong
-                var currentNode = PlayGame(root);
+                PlayGame(root);
 
                 //add questions for responsive tree
                 Console.WriteLine("Was this correct? Enter 'yes' or 'no'");
                 var input = Console.ReadLine();
+                if (input.ToLower() == "yes") Console.WriteLine("Hurray!")
                 if (input.ToLower() == "no")
                 {
                     Console.WriteLine("Please enter a new question to grow the tree, then - something that differentiates between your answer and mine. When answered yes, it should be the country you are thinking of.");
@@ -138,12 +138,11 @@ namespace Program
         //returns last visited treenode
         public static TreeNode PlayGame(TreeNode node)
         {
-            if (node == null) return null;
 
             if (node.YesChild == null && node.NoChild == null) // Leaf node (answer)
             {
                 Console.WriteLine(node.QuestionOrAnswer);
-                return node;
+                return
             }
 
             Console.WriteLine(node.QuestionOrAnswer + " (yes/no)");
