@@ -45,7 +45,7 @@ namespace Program
                 //add questions for responsive tree
                 Console.WriteLine("Was this correct? Enter 'yes' or 'no'");
                 var input = Console.ReadLine();
-                if (input.ToLower() == "yes") Console.WriteLine("Hurray!")
+                if (input.ToLower() == "yes") Console.WriteLine("Hurray!");
                 if (input.ToLower() == "no")
                 {
                     Console.WriteLine("Please enter a new question to grow the tree, then - something that differentiates between your answer and mine. When answered yes, it should be the country you are thinking of.");
