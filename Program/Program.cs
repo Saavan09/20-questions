@@ -36,6 +36,7 @@ namespace Program
 
                 }
 
+                Console.WriteLine("Let's start! Think of a country you'd like to guess. I'll ask you some questions!");
                 
                 // Run the game 
                 TreeNode currentNode = PlayGame(root);
@@ -80,10 +81,11 @@ namespace Program
         {
             //the current guess, which will be the "no" child of the new question
             string incorrectAnswer = currentNode.QuestionOrAnswer;
+            string yesChildQ = "Is it " + yesChild + "?";//newly formatted question for node
 
             //create new nodes
             TreeNode oldQuestionNode = new TreeNode(incorrectAnswer);//the old guess
-            TreeNode newQuestionYesChild = new TreeNode(yesChild);//the new guess
+            TreeNode newQuestionYesChild = new TreeNode(yesChildQ);//the new guess
             
             //add in the new question, which branches into new guess if yes and old guess if no
             currentNode.QuestionOrAnswer = newQuestion;
